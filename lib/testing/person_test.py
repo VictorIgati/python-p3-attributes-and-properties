@@ -1,32 +1,50 @@
 #!/usr/bin/env python3
+#/python-p3-attributes-and-properties/lib/person.py
 
-from person import Person
+APPROVED_JOBS = [
+    "Admin",
+    "Customer Service",
+    "Human Resources",
+    "ITC",
+    "Production",
+    "Legal",
+    "Finance",
+    "Sales",
+    "General Management",
+    "Research & Development",
+    "Marketing",
+    "Purchasing"
+]
 
-import io
-import sys
+class Person:
+    def __init__(self, name='Unknown', job='Unemployed'):
+        self.name = name
+        self.job = job
 
-class TestPerson:
-    '''Person in person.py'''
+    def get_name(self):
+        return self._name
 
-    def test_is_class(self):
-        '''is a class with the name "Person".'''
-        guido = Person(name='Guido', job='Sales')
-        assert(type(guido) == Person)
-        
-    def test_name_not_empty(self):
-        '''prints "Name must be string between 1 and 25 characters." if empty string.'''
-        captured_out = io.StringIO()
-        sys.stdout = captured_out
-        Person(name="", job="Sales")
-        sys.stdout = sys.__stdout__
-        assert(captured_out.getvalue() == "Name must be string between 1 and 25 characters.\n")
+    def set_name(self, name):
+        if isinstance(name, str) and 1 <= len(name) <= 25:
+            self._name = name.title()
+        else:
+            print("Name must be string between 1 and 25 characters.")
 
-    def test_name_string(self):
-        '''prints "Name must be string between 1 and 25 characters." if not string.'''
-        captured_out = io.StringIO()
-        sys.stdout = captured_out
-        Person(name=123, job='Sales')
-        sys.stdout = sys.__stdout__
+    name = property(get_name, set_name)        
+
+    def get_job(self):
+        return self._job
+
+    def set_job(self, job):
+        if job in APPROVED_JOBS:
+            self._job = job
+        else:
+            print("Job must be in list of approved jobs.")
+
+    job = property(get_job, set_job) 
+
+    def __str__(self):
+        return f"{self._name} is a {self._job}"
         assert(captured_out.getvalue() == "Name must be string between 1 and 25 characters.\n")
 
     def test_name_under_25(self):
